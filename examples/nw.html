@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Hilo3d 女王节Demo</title>
+    <style>
+        #container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script src="//g.alicdn.com/hilo/Hilo3d/1.1.5/Hilo3d.js"></script>
+    <script src="../lib/stats.js"></script>
+    <script src="../lib/OrbitControls.js"></script>
+    <script>
+        var camera = new Hilo3d.PerspectiveCamera({
+            aspect: innerWidth / innerHeight,
+            far: 1000,
+            near:0.1,
+            fov:75,
+            y:0,
+            z:10
+        });
+        
+        var stage = new Hilo3d.Stage({
+            container: document.getElementById('container'),
+            camera: camera,
+            width: innerWidth,
+            height: innerHeight
+        });
+
+        var ticker = new Hilo3d.Ticker(60);
+        ticker.addTick(stage);
+        ticker.addTick(Hilo3d.Tween);
+        ticker.addTick(Hilo3d.Animation);
+        ticker.start();
+
+        var res = [{
+                "id": "soldier",
+                "src": "./assets/models/nw/soldier.gltf"
+            },{
+                "id": "ground",
+                "src": "./assets/models/nw/ground.gltf"
+            }, {
+                "id": "player0",
+                "src": "./assets/models/nw/player0.gltf"
+            },{
+                "id": "player1",
+                "src": "./assets/models/nw/player1.gltf"
+            }
+        ];
+
+        var loadQueue = new Hilo3d.LoadQueue();
+        loadQueue.add(res).on('complete', function(){
+            res.forEach(function(r){
+                var node = loadQueue.getContent(r.id).node;
+                node.getChildByName('RootNode').setScale(0.01);
+                res[r.id] = node;
+            });
+
+            init();
+        }).start();
+
+        playerScale = 1.5;
+        soldierScale = 1.2;
+        globalScale = 0.5;
+
+        function init(){
+            _root = new Hilo3d.Node({
+                y:0.1,
+                onUpdate:function(){
+                    this.rotationY += 0.3;
+                }
+            }).addTo(stage);
+            _root.setScale(globalScale);
+
+            player0 = res.player0;
+            player0.x = -3;
+            player0.rotationY = 90;;
+            player0.setScale(playerScale);
+            _root.addChild(player0);
+            player0.anim.addClip('run', 0, 20/30);
+            player0.anim.addClip('attack', 20/30, 45/30);
+            player0.anim.stop();
+
+            player1 = res.player1;
+            player1.x = 3;
+            player1.rotationY = -90;
+            player1.setScale(playerScale);
+            _root.addChild(player1);
+            player1.anim.addClip('run', 0, 20/30);
+            player1.anim.addClip('attack', 20/30, 45/30);
+            player1.anim.stop();
+
+            ground = res.ground;
+            ground.y = -0.1;
+            _root.addChild(ground);
+
+            var soldiersPos = [
+                [-4, 0, -3.5],
+                [-4, 0, -1.5],
+                [-4, 0, 1.5],
+                [-4, 0, 3.5],
+                [4, 0, -3.5],
+                [4, 0, -1.5],
+                [4, 0, 1.5],
+                [4, 0, 3.5],
+            ];
+
+            soldiers = [];
+            for(var i = 0;i < 8;i ++){
+                createSoldier(i, soldiersPos[i]);
+            }
+
+            ticker.timeout(function(){
+                roleRun();
+                soldierRun();
+            }, 3000);
+
+            camera.lookAt(ground);
+        }
+
+        function createSoldier(index, pos){
+            var soldier = res.soldier.clone();
+            soldier.setPosition(pos[0], 5, pos[2]);
+            soldier.rotationY = index>3?-90:90;
+            soldier.setScale(soldierScale);
+            soldier.visible = false;
+            Hilo3d.Tween.to(soldier, {
+                y:0
+            }, {
+                onStart:function(){
+                    soldier.visible = true;
+                },
+                delay:index*250,
+                duration:500
+            });
+
+            soldiers.push(soldier);
+            _root.addChild(soldier);
+            soldier.anim.addClip('run', 0, 20/30);
+            soldier.anim.addClip('attack', 20/30, 45/30);
+            soldier.anim.stop();
+            return soldier;
+        };
+
+        function roleRun(){
+            var playerOffset = 0.9;
+           
+            player0.anim.play('run');
+            Hilo3d.Tween.to(player0, {
+                x:-playerOffset
+            },{
+                duration:1000,
+                onComplete:function(){
+                    player0.anim.play('attack');
+                }
+            });
+
+            player1.anim.play('run');
+            Hilo3d.Tween.to(player1, {
+                x:playerOffset
+            },{
+                duration:1000,
+                onComplete:function(){
+                    player1.anim.play('attack');
+                }
+            });
+        }
+
+        function soldierRun(){
+            var soldierOffset = 0.7;
+
+            soldiers.forEach(function(soldier, index){
+                Hilo3d.Tween.to(soldier, {
+                    x:index>3?soldierOffset:-soldierOffset
+                },{
+                    duration:1500,
+                    delay:600 + Math.random()*1000,
+                    onStart:function(){
+                        soldier.anim.play('run');
+                    },
+                    onComplete:function(e){
+                        soldier.anim.play('attack');
+                    }
+                });
+            });
+        }
+
+        var stats = new Stats(ticker, stage.renderer.renderInfo);
+        var orbitControls = new OrbitControls(stage);
+    </script>
+</body>
+</html>

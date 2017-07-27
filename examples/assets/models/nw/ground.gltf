@@ -1,0 +1,246 @@
+{
+    "asset": {
+        "generator": "tmx:FBX2GLTF",
+        "premultipliedAlpha": true,
+        "profile": {
+            "api": "WebGL",
+            "version": "1.0.2"
+        },
+        "version": "1.0"
+    },
+    "scene": "test",
+    "scenes": {
+        "test": {
+            "nodes": [
+                "RootNode"
+            ]
+        }
+    },
+    "nodes": {
+        "RootNode": {
+            "name": "RootNode",
+            "children": [
+                "ChessBoard"
+            ]
+        },
+        "ChessBoard": {
+            "name": "ChessBoard",
+            "matrix": [
+                -0.9999999999999886,
+                1.2246467202362698e-16,
+                -1.5099579909783704e-7,
+                0,
+                -1.5099579909783704e-7,
+                -1.1102230246251565e-16,
+                0.9999999999999887,
+                0,
+                1.2246464555384738e-16,
+                1,
+                2.220446049250313e-16,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "mesh_Chessboard_1"
+            ]
+        }
+    },
+    "animations": {},
+    "materials": {
+        "Chessboard": {
+            "type": "phong",
+            "name": "Chessboard",
+            "cullingOff": false,
+            "extensions": {
+                "KHR_materials_common": {
+                    "doubleSided": false,
+                    "technique": "PHONG",
+                    "values": {
+                        "diffuse": "chess",
+                        "ambient": [
+                            0.588235318660736,
+                            0.588235318660736,
+                            0.588235318660736,
+                            1
+                        ],
+                        "emission": [
+                            0,
+                            0,
+                            0,
+                            1
+                        ],
+                        "shininess": 2,
+                        "specular": [
+                            0,
+                            0,
+                            0,
+                            1
+                        ],
+                        "transparency": 1
+                    }
+                }
+            }
+        }
+    },
+    "meshes": {
+        "mesh_Chessboard_1": {
+            "name": "mesh_Chessboard_1",
+            "primitives": [
+                {
+                    "attributes": {
+                        "POSITION": "accessor_normal_0",
+                        "NORMAL": "accessor_normal_1",
+                        "TEXCOORD_0": "accessor_normal_2"
+                    },
+                    "material": "Chessboard",
+                    "mode": 4,
+                    "indices": "accessor_indices_3"
+                }
+            ]
+        }
+    },
+    "skins": {},
+    "samplers": {
+        "sampler_chess": {
+            "wrapS": 10497,
+            "wrapT": 10497,
+            "magFilter": 9729,
+            "minFilter": 9729
+        }
+    },
+    "images": {
+        "chess": {
+            "name": "chess",
+            "uri": "ground.png",
+            "fileName": "chessboard.png"
+        }
+    },
+    "textures": {
+        "chess": {
+            "sampler": "sampler_chess",
+            "format": 6408,
+            "internalFormat": 6408,
+            "name": "chess",
+            "source": "chess"
+        }
+    },
+    "camera": {},
+    "accessors": {
+        "accessor_normal_0": {
+            "name": "accessor_normal_0",
+            "componentType": 5126,
+            "type": "VEC3",
+            "count": 396,
+            "min": [
+                -597.385986328125,
+                -536.6240234375,
+                -0.435080528259277
+            ],
+            "max": [
+                597.385986328125,
+                536.806884765625,
+                306.971496582031
+            ],
+            "bufferView": "bufferView_normal",
+            "byteOffset": 0,
+            "byteStride": 0
+        },
+        "accessor_normal_1": {
+            "name": "accessor_normal_1",
+            "componentType": 5126,
+            "type": "VEC3",
+            "count": 396,
+            "min": [
+                -0.999999940395355,
+                -0.999999940395355,
+                -0.999999940395355
+            ],
+            "max": [
+                0.999999940395355,
+                0.999999940395355,
+                0.999999940395355
+            ],
+            "bufferView": "bufferView_normal",
+            "byteOffset": 4752,
+            "byteStride": 0
+        },
+        "accessor_normal_2": {
+            "name": "accessor_normal_2",
+            "componentType": 5126,
+            "type": "VEC2",
+            "count": 396,
+            "min": [
+                0.00420690421015024,
+                0.002882719039916992
+            ],
+            "max": [
+                0.999867141246796,
+                0.9968433771282434
+            ],
+            "bufferView": "bufferView_normal",
+            "byteOffset": 9504,
+            "byteStride": 0
+        },
+        "accessor_indices_3": {
+            "name": "accessor_indices_3",
+            "componentType": 5123,
+            "type": "SCALAR",
+            "count": 396,
+            "min": [
+                0
+            ],
+            "max": [
+                395
+            ],
+            "bufferView": "bufferView_indices",
+            "byteOffset": 0,
+            "byteStride": 0
+        }
+    },
+    "bufferViews": {
+        "bufferView_normal": {
+            "name": "bufferView_normal",
+            "buffer": "buffer",
+            "byteLength": 12672,
+            "byteOffset": 0,
+            "target": 34962
+        },
+        "bufferView_indices": {
+            "name": "bufferView_indices",
+            "buffer": "buffer",
+            "byteLength": 792,
+            "byteOffset": 12672,
+            "target": 34963
+        }
+    },
+    "buffers": {
+        "buffer": {
+            "byteLength": 13464,
+            "type": "arraybuffer",
+            "uri": "ground.bin"
+        }
+    },
+    "extensionsUsed": [
+        "KHR_materials_common"
+    ],
+    "extensions": {
+        "KHR_materials_common": {
+            "lights": {
+                "defaultAmbient": {
+                    "ambient": {
+                        "color": [
+                            1,
+                            1,
+                            1
+                        ]
+                    },
+                    "name": "defaultAmbient",
+                    "type": "ambient"
+                }
+            }
+        }
+    }
+}
