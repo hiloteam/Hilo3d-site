@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Hilo3d 女王节Demo</title>
+    <style>
+    html {
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+    }
+
+    html,
+    body,
+    div {
+        padding: 0;
+        margin: 0;
+    }
+
+    #container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    video {
+        position: absolute;
+        z-index: 100;
+        left: 0px;
+        top: 0px;
+        width: 400px;
+        height: 400px;
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <video id="v" autoplay playsinline webkit-playsinline></video>
+    </div>
+    <script src="//g.alicdn.com/hilo/Hilo3d/1.1.5/Hilo3d.js"></script>
+    <script src="../lib/stats.js"></script>
+    <script src="../lib/HorizontalControl.js"></script>
+    <script>
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+    var video = $('v');
+    var constraints = {
+        audio: false,
+        video: true
+    };
+
+    function handleSuccess(stream) {
+        window.stream = stream;
+        video.srcObject = stream;
+    }
+
+    function handleError(error) {
+        console.log('navigator.getUserMedia error: ', error);
+    }
+
+    navigator.mediaDevices.getUserMedia(constraints).
+    then(handleSuccess).catch(handleError);
+
+    var camera = new Hilo3d.PerspectiveCamera({
+        aspect: innerWidth / innerHeight,
+        far: 10000,
+        near: 0.1,
+        fov: 75,
+        y: 0,
+        z: 120
+    });
+
+    var stage = new Hilo3d.Stage({
+        container: $('container'),
+        camera: camera,
+        clearColor: new Hilo3d.Color(0.8, 0.8, 0.8),
+        width: innerWidth,
+        height: innerHeight
+    });
+
+    var texture = new Hilo3d.Texture({
+        image: video,
+        wrapS: 33071,
+        wrapT: 33071,
+        autoUpdate: true,
+        // flipY: true
+    });
+
+    var sGeometry = new Hilo3d.SphereGeometry({
+        radius: 300,
+        heightSegments: 32,
+        widthSegments: 64,
+    })
+    var sMaterial = new Hilo3d.BasicMaterial({
+        // lightType: 'NONE',
+        diffuse: texture,
+        wireframe: false,
+        side: 1032
+    });
+    var sMesh = new Hilo3d.Mesh({
+        geometry: sGeometry,
+        material: sMaterial
+    });
+    stage.addChild(sMesh);
+
+    //box
+    var bGeometry = new Hilo3d.BoxGeometry({
+        width: 30,
+        height: 30,
+        depth: 30
+    });
+    bGeometry.setAllRectUV([[0, 1], [1, 1], [1, 0], [0, 0]]);
+
+    var bMaterial = new Hilo3d.BasicMaterial({
+        // lightType: 'NONE',
+        diffuse:new Hilo3d.LazyTexture({
+            crossOrigin:true,
+            src:'//gw.alicdn.com/tfs/TB1iNtERXXXXXcBaXXXXXXXXXXX-600-600.png'
+        })
+    });
+    var bMesh = new Hilo3d.Mesh({
+        geometry: bGeometry,
+        material: bMaterial,
+        x: 100
+    });
+
+    stage.addChild(bMesh);
+
+    stage.onUpdate = function(){
+        bMesh.rotationY += 1;
+    }
+
+
+    var ticker = new Hilo3d.Ticker(60);
+    ticker.addTick(stage);
+    ticker.addTick(Hilo3d.Tween);
+    ticker.addTick(Hilo3d.Animation);
+    ticker.start();
+
+    var stats = new Stats(ticker, stage.renderer.renderInfo);
+    var orbitControls = new OrbitControls(stage);
+    </script>
+</body>
+
+</html>
