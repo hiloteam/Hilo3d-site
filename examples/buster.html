@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Hilo3d PBR材质渲染</title>
+    <style>
+        #container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script src="//g.alicdn.com/hilo/Hilo3d/1.3.0/Hilo3d.js"></script>
+    <script src="../lib/stats.js"></script>
+    <script src="../lib/OrbitControls.js"></script>
+    <script>
+        var camera = new Hilo3d.PerspectiveCamera({
+            aspect: innerWidth / innerHeight,
+            far: 10000,
+            near:0.1,
+            fov:75,
+            y:-3,
+            z:10
+        });
+        
+        var stage = new Hilo3d.Stage({
+            container: document.getElementById('container'),
+            camera: camera,
+            width: innerWidth,
+            height: innerHeight
+        });
+
+        var ticker = new Hilo3d.Ticker(40);
+        ticker.addTick(stage);
+        ticker.addTick(Hilo3d.Tween);
+        ticker.addTick(Hilo3d.Animation);
+        ticker.start();
+
+        var loader = new Hilo3d.GLTFLoader();
+        loader.load({
+            src: './assets/models/buster/busterDrone.gltf'
+        }).then(function (model) {
+            model.node.setScale(8);
+            stage.addChild(model.node);
+        });
+
+        new Hilo3d.DirectionalLight({
+            color:new Hilo3d.Color(1, 1, 1),
+            direction:new Hilo3d.Vector3(0, -1, 1),
+            shadow: {
+                // debug: true,
+                maxBias: 0.01,
+                minBias: 0.001
+            }
+        }).addTo(stage);
+
+        new Hilo3d.AmbientLight({
+            color:new Hilo3d.Color(1, 1, 1),
+            amount: 1
+        }).addTo(stage);
+       
+
+        var stats = new Stats(ticker, stage.renderer.renderInfo);
+        var orbitControls = new OrbitControls(stage);
+    </script>
+</body>
+</html>
