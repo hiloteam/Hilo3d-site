@@ -29,3 +29,8 @@ Hilo3d site，examples
 [Hilo3d PBR Demo(adamHead)](https://hiloteam.github.io/Hilo3d-site/examples/adamHead.html)
 
 
+### Texture
+
+[Hilo3d Skybox](https://hiloteam.github.io/Hilo3d-site/examples/buster.html)
+
+
