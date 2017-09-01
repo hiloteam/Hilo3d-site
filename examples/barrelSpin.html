@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>Hilo3d 品牌旋转</title>
+    <title>Hilo3d Spin Demo</title>
     <style>
     html,
     body {
@@ -101,8 +101,6 @@
             '//gw.alicdn.com/tfs/TB1IVZNRpXXXXaNXFXXXXXXXXXX-2048-2048.jpg_960x960.jpg',
             '//gw.alicdn.com/tfs/TB1M3gyRpXXXXb9apXXXXXXXXXX-2048-2048.jpg_960x960.jpg'
         ]
-    }, {
-        src: 'https://ossgw.alicdn.com/tmall-c3/tmx/b19ca23c3aae1c6b820ee2bd0dfdbc51.gltf'
     }]).on('complete', function() {
         var result = loadQueue.getAllContent();
         var skyboxMap = result[0];
@@ -145,9 +143,9 @@
                 y: rand(-1, 1),
                 z: zz,
                 angel: Math.atan(zz/xx) * 180,
-                rotationY: Math.atan(zz/xx) * 180,
+                rotationY: Math.atan(zz/xx) * 360 - 90,
                 onUpdate: function(){
-                    this.rotationY = this.angel + rectBase.rotationY;
+                    // this.rotationY = this.angel + rectBase.rotationY;
                 }
             });
             rect.setScale(rand(0.2, 0.2));
@@ -156,7 +154,7 @@
 
         stage.addChild(rectBase);
         stage.onUpdate = function() {
-            rectBase.rotationY += 2;
+            rectBase.rotationY += 1;
         }
 
         addClass($loading, "hide");
